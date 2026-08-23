@@ -1,4 +1,4 @@
-class Person {
+export class Person {
     name: string;
     age: number;
     constructor(name: string, age: number) {
@@ -11,5 +11,5 @@ class Person {
     }
 }
 
-const person = new Person("Anh", 20);
-person.displayInformation();
+// const person = new Person("Anh", 20);
+// person.displayInformation();
