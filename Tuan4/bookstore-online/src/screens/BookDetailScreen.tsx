@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Book } from "../../data";
 
 export default function BookDetailScreen({
@@ -15,6 +15,27 @@ export default function BookDetailScreen({
             <Pressable style={styles.backButton} onPress={onBack}>
                 <Text style={styles.backText}>← Quay lại</Text>
             </Pressable>
+            
+            <ScrollView style={styles.scroll}
+              contentContainerStyle={styles.scrollContent}
+
+
+            >
+              <Image source={{uri: book.cover}}
+                style={styles.cover}
+              />
+              <Text style={styles.title}>{book.title}</Text>
+                      <Text style={styles.author}>{book.author}</Text>
+                      <Text style={styles.price}>{book.price.toLocaleString()} đ</Text>
+                      <Text style={styles.description}>{book.description}</Text>
+            </ScrollView>
+
+            <View style={styles.bottomBar}>
+              <Text style={styles.bottomPrice}>{book.price.toLocaleString()} đ</Text>
+              <Pressable style={styles.addButton} onPress={onAddToCart}>
+                <Text style={styles.addButtonText}>Thêm vào giỏ</Text>
+              </Pressable>
+            </View>
         </View>
     )
 }
