@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Lab06 Navigation",
+    "slug": "lab06-navigation",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"]
+  }
+}
