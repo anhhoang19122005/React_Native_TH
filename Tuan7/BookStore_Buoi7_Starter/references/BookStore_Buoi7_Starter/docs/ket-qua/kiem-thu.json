@@ -1,0 +1,19 @@
+{
+  "viewport": "390x844",
+  "browser": "Microsoft Edge headless",
+  "passed": [
+    "Home API, đủ 12 sách, không hiện khung TODO",
+    "Tìm kiếm không dấu",
+    "Tìm kiếm chữ hoa",
+    "EmptyState và xóa bộ lọc",
+    "Thêm trùng giới hạn stock 5, tổng tiền và badge",
+    "Checkout nhận đúng total",
+    "Đăng nhập và đăng xuất",
+    "Danh mục → Home, lọc AND từ khoá/danh mục/giá",
+    "Sắp xếp tăng/giảm theo giá",
+    "Lỗi mạng và thử lại Home",
+    "Lỗi mạng và thử lại Danh mục",
+    "Lỗi mạng và thử lại Chi tiết"
+  ],
+  "pageErrors": []
+}
