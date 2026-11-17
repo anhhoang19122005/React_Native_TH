@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "BookStore",
+    "slug": "bookstore",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": { "supportsTablet": true },
+    "android": { "package": "com.example.bookstore" },
+    "web": { "bundler": "metro" },
+    "icon": "./assets/icon.png",
+    "splash": { "image": "./assets/splash.png", "resizeMode": "contain", "backgroundColor": "#0B1F5C" },
+    "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#0B1F5C" }
+
+  }
+}
