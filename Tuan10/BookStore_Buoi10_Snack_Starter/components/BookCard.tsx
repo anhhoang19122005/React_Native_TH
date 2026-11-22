@@ -6,7 +6,12 @@ import { colors } from "../theme";
 
 // TODO BT10.3a: khai báo interface BookCardProps gồm
 //   book: Book; layout?: "row" | "tile"; onSelect: (id: string) => void
-
+interface BookCardProps {
+  book: Book;
+  layout?: "row" | "tile";
+  onSelect: (id: string) => void;
+  isTile: boolean
+}
 // TODO BT10.3b: viết component BookCard
 //   - bọc nội dung bằng TouchableOpacity, nhấn thì gọi onSelect(book.id)
 //   - ảnh bìa (Image), tên sách, giá (formatPrice), rating (book.rating.toFixed(1)), ✅ hoặc ❌ theo inStock
@@ -14,12 +19,28 @@ import { colors } from "../theme";
 //   - isTile = layout === "tile"
 //   - style của thẻ: [styles.card, isTile && styles.cardTile]; làm tương tự cho coverBox và info
 //   - tile: hiện nhãn rating (styles.ratingBadge) đè lên ảnh, tên sách 1 dòng, ẩn tác giả và thể loại
-function BookCard(_props: any) {
-  return null;
+function BookCard({book, layout = 'row', onSelect} : BookCardProps) {
+  const isTile = layout === 'tile'
+  return (
+    <TouchableOpacity onPress={() => onSelect(book.id)} style={[styles.card, isTile ? styles.cardTile : null]}>
+      <View>
+        <Image source={{uri: book.cover}} style={[styles.coverBox, isTile ? styles.coverBoxTile : null]}/>
+        {isTile ? <Text style={styles.ratingBadge}>{book.rating.toFixed(1)}⭐</Text> : null}
+      </View>
+      <View style={[styles.info, isTile ? styles.infoTile : null]}>
+        <Text style={styles.title}>{book.title}</Text>
+        {!isTile ? (<Text style={styles.sub}>{book.author} - {book.category}</Text>) : null}
+        <View style={styles.row}>
+          <Text style={styles.price}>{formatPrice(book.price)}</Text>
+          <Text style={isTile ? styles.ratingBadge : null}>{book.inStock ? "✅" : "❌"}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 }
 
 // TODO BT10.3c: đổi thành export default React.memo(BookCard)
-export default BookCard;
+export default React.memo(BookCard);
 
 const styles = StyleSheet.create({
   card: { flexDirection: "row", backgroundColor: "#fff", borderRadius: 14, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: colors.line, gap: 12 },

@@ -7,6 +7,12 @@ const favoritesSlice = createSlice({
   reducers: {
     toggleFavorite(state, action: PayloadAction<string>) {
       // TODO BT10.10a: id đã có trong state.ids thì bỏ ra, chưa có thì thêm vào
+      const found = state.ids.includes(action.payload);
+      if (found) {
+        state.ids = state.ids.filter((id) => id !== action.payload);
+      } else {
+        state.ids.push(action.payload);
+      }
     },
   },
 });

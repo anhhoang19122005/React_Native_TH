@@ -43,20 +43,31 @@ export function HomeScreen({ navigation }: Props) {
 
   // TODO BT10.6: lọc theo category (null là tất cả) và theo keyword (so khớp tên hoặc tác giả,
   //   dùng normalize() để bỏ dấu); bọc trong useMemo với [books, keyword, category]
-  const visible = books;
+  const visible = useMemo(() => {
+    let result = [...books];
+    if (category !== null) {
+      console.log("filtering category")
+      result = result.filter((b) => b.category === category)
+    }
+    if (keyword !== "") {
+      console.log("filtering keyword")
+      result = result.filter((b) => normalize(b.title + " " + b.author).includes(normalize(keyword)))
+    }
+    return result;
+  }, [books, keyword, category]);
 
   const onSelect = useCallback((id: string) => {
     // TODO BT10.7d: navigation.navigate("Detail", { id })
-    console.log("Chọn sách", id);
+    navigation.navigate("Detail", {id})
   }, []);
 
   // TODO BT10.5a: numColumns = isTile ? 2 : 1
-  const numColumns = 1;
+  const numColumns = isTile ? 2 : 1;
 
   return (
     // TODO BT10.1b: thay View bên dưới bằng SafeAreaView (edges={["top"]}) từ react-native-safe-area-context,
     //   đổi cả thẻ đóng </View> tương ứng ở cuối return thành </SafeAreaView>
-    <View style={styles.root}>
+    <SafeAreaView edges={["top"]} style={styles.root}>
       <View style={styles.header}>
         <Text style={styles.title}>📚 BookStore</Text>
         <TextInput
@@ -87,19 +98,31 @@ export function HomeScreen({ navigation }: Props) {
 
       {loading ? (
         // TODO BT10.2b: hiển thị <ActivityIndicator size="large" color={colors.indigo} /> kèm chữ "Đang tải sách…"
-        <Text style={styles.empty}>Đang tải…</Text>
+        <View>
+          <ActivityIndicator size="large" color={colors.indigo} />
+          <Text style={styles.empty}>Đang tải…</Text>
+        </View>
+        
       ) : (
         // TODO BT10.2a: thay khối bên dưới bằng FlatList (data={visible}, keyExtractor) hiển thị tên, rating, ✅/❌
         // TODO BT10.3d: renderItem dùng <BookCard book={item} layout={isTile ? "tile" : "row"} onSelect={onSelect} />
         // TODO BT10.5a: key={String(numColumns)}, numColumns, columnWrapperStyle={isTile ? styles.columnWrapper : undefined}
         // TODO BT10.5b: refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        <View style={{ padding: 14 }}>
-          {visible.map((b) => (
-            <Text key={b.id} style={styles.plain}>{b.title}</Text>
-          ))}
-        </View>
+        <FlatList
+          key={String(numColumns)}
+          numColumns={numColumns}
+          columnWrapperStyle={isTile ? styles.columnWrapper : undefined}
+          data={visible}
+          keyExtractor={(book) => book.id.toString()}
+          renderItem={({item}) => (
+            <BookCard book={item} onSelect={onSelect} layout={isTile ? 'tile' : 'row'} isTile={isTile}/>
+          )}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+          ListEmptyComponent={(<Text style={styles.empty}>Không tìm thấy sách phù hợp.</Text>)}
+        />
+        
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

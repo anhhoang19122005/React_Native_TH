@@ -3,16 +3,22 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../navigation";
 // TODO BT10.9b: import useAppDispatch (store/hooks) và addToCart (store/cartSlice)
+import {useAppDispatch} from "../store/hooks"
+import {addToCart} from "../store/cartSlice"
+import {toggleFavorite, selectIsFavorite} from "../store/favoritesSlice"
 // TODO BT10.10b: import useAppSelector (store/hooks), selectIsFavorite và toggleFavorite (store/favoritesSlice)
+import {useAppSelector} from "../store/hooks"
 import { getBookById } from "../data/books";
 import { formatPrice } from "../utils";
 import { colors } from "../theme";
 
 export function DetailScreen({ route }: NativeStackScreenProps<RootStackParamList, "Detail">) {
   const { id } = route.params; // tham số do màn Home truyền sang
+  
   // TODO BT10.9b: const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   // TODO BT10.10b: const favorite = useAppSelector(selectIsFavorite(id));
-  const favorite = false;
+  const favorite = useAppSelector(selectIsFavorite(id))
   const book = getBookById(id);
 
   if (!book) return <Text style={{ padding: 20 }}>Không tìm thấy sách.</Text>;
@@ -32,6 +38,7 @@ export function DetailScreen({ route }: NativeStackScreenProps<RootStackParamLis
           disabled={!book.inStock}
           onPress={() => {
             // TODO BT10.9b: dispatch(addToCart(book))
+            dispatch(addToCart(book))
           }}
           testID="add-cart"
         >
@@ -41,6 +48,7 @@ export function DetailScreen({ route }: NativeStackScreenProps<RootStackParamLis
           style={[styles.btn, styles.btnFav, favorite && styles.btnFavOn]}
           onPress={() => {
             // TODO BT10.10b: dispatch(toggleFavorite(book.id))
+            dispatch(toggleFavorite(book.id))
           }}
           testID="toggle-fav"
         >
